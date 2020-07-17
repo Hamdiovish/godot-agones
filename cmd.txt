@@ -1,0 +1,9 @@
+
+git clone https://github.com/googleapis/googleapis
+cd googleapis
+
+#curl https://raw.githubusercontent.com/googleapis/googleapis/master/google/api/http.proto > google/api/http.proto
+#curl https://raw.githubusercontent.com/googleapis/googleapis/master/google/api/annotations.proto > google/api/annotations.proto
+
+#./protoc -Igoogleapis --cpp_out=. googleapis/google/api/http.proto 
+#./protoc -Igoogleapis --cpp_out=. googleapis/google/api/annotations.proto 
