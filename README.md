@@ -19,12 +19,13 @@ Since we will be running the server in a container you shouldn't change those pa
 ### by hand
 If you prefer not to use scons you can use these commands (or use them to make a proper Makefile)
 ```
-g++ -o src/gdlibrary.os -c -fPIC -g -O3 -std=c++14 -fPIC -I. -Isrc -Iinclude -Igodot_headers -Igodot-cpp/include -Igodot-cpp/include/core src/gdlibrary.cpp
+g++ -o src/gdlibrary.os -c -fPIC -g -O3 -std=c++14 -fPIC -I. -Isrc -Iinclude -Igodot_headers -Igodot-cpp/include -Igodot-cpp/include/core -Igodot-cpp/include/gen src/gdlibrary.cpp
 
-g++ -o src/agones.os -c -fPIC -g -O3 -std=c++14 -fPIC -I. -Isrc -Iinclude -Igodot_headers -Igodot-cpp/include -Igodot-cpp/include/core src/agones.cpp
+g++ -o src/agones.os -c -fPIC -g -O3 -std=c++14 -fPIC -I. -Isrc -Iinclude -Igodot_headers -Igodot-cpp/include -Igodot-cpp/include/core -Igodot-cpp/include/gen src/agones.cpp
 
-g++ -o example/bin/x11/libagones.so -shared src/gdlibrary.os src/agones.os -Lgodot-cpp/bin -Lexample/bin/x11/lib -lgodot-cpp.linux.64 -lagonessdk -lgrpc++_unsecure -lgrpc -lprotobuf
+g++ -o example/bin/x11/libagones.so -shared src/gdlibrary.os src/agones.os -Lgodot-cpp/bin -Lexample/bin/x11/lib -lgodot-cpp.linux.64 -lagonessdk -lgrpc++_unsecure -lgrpc -lprotobuf -lpthread
 ```
+Note: remove .so files from libs folder if you prefer static linking
 
 ## Export example
 Next you need to export your game to `server` platform in `example/export/` folder.
