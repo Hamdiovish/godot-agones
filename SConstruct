@@ -6,13 +6,16 @@ platform = ARGUMENTS.get('platform', 'linux')
 bits = ARGUMENTS.get('bits', 64)
 project = ARGUMENTS.get('project', 'example/')
 
-agones_libs = ['agonessdk', 'grpc++_unsecure', 'grpc', 'protobuf']
+agones_libs = ['agonessdk', 'grpc++_unsecure', 'grpc', 'protobuf','pthread']
 
 final_lib_path = project + 'bin/'
 
 # This makes sure to keep the session environment variables on windows, 
 # that way you can run scons in a vs 2017 prompt and it will find all the required tools
 env = Environment()
+whole_archive = env.Command('-Wl,--whole-archive', [], '')
+no_whole_archive = env.Command('-Wl,--no-whole-archive', [], '')
+
 if platform == 'windows':
     env = Environment(ENV = os.environ)
 
@@ -29,7 +32,7 @@ if platform == 'osx':
 
 elif platform == 'linux':
     env.Append(CCFLAGS = ['-fPIC', '-g','-O3', '-std=c++14'])
-    env.Append(LINKFLAGS = ['-ldl', '-lpthread', '-Wl,--no-undefined'])
+    env.Append(LINKFLAGS = ['-ldl', '-Wl,--no-undefined'])
 
     final_lib_path = final_lib_path + 'x11/'
 
@@ -43,12 +46,14 @@ elif platform == 'windows':
 
 agones_libs_path = final_lib_path + 'lib'
 
-env.Append(CPPPATH=['.', 'src/', 'include/', 'godot_headers/', 'godot-cpp/include/', 'godot-cpp/include/core/'])
+env.Append(CPPPATH=['.', 'src/', 'include/', 'godot_headers/', 'godot-cpp/include/', 'godot-cpp/include/gen/', 'godot-cpp/include/core/'])
 env.Append(LIBPATH=['godot-cpp/bin', agones_libs_path])
 env.Append(LIBS=['godot-cpp' + '.' + platform + '.' + str(bits)] + agones_libs)
-
 sources = []
 add_sources(sources, 'src')
+env.Append(LINKFLAGS=[
+    '-Wl,-rpath,\'$$ORIGIN\'/lib'
+])
 
 library = env.SharedLibrary(target=final_lib_path + 'libagones', source=sources)
 Default(library)
