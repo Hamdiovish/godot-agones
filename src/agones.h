@@ -12,23 +12,32 @@
 
 namespace godot
 {
-    class Agones : public godot::GodotScript<Reference>
+
+    class Agones : public Reference
     {
-        GODOT_CLASS(Agones)
+
+    GODOT_CLASS(Agones,Reference)
 
     private:
         std::unique_ptr<agones::SDK> sdk;
 
     public:
         Agones();
+        ~Agones();
 
-        bool Connect();
+        static Agones *instance;
+
+        void _init(); // our initializer called by Godot
+
+        bool Connecting();
         void Ready();
         bool Health();
         godot::Dictionary GameServer();
         void Shutdown();
         void SetLabel(godot::String key, godot::String value);
         void SetAnnotation(godot::String key, godot::String value);
+        void WatchGameServer();
+        Agones* get_singleton();
 
         static void _register_methods();
     };

@@ -6,7 +6,8 @@ platform = ARGUMENTS.get('platform', 'linux')
 bits = ARGUMENTS.get('bits', 64)
 project = ARGUMENTS.get('project', 'example/')
 
-agones_libs = ['agonessdk', 'grpc++_unsecure', 'grpc', 'protobuf','pthread']
+#agones_libs = ['agonessdk', 'grpc++_unsecure', 'grpc', 'protobuf','pthread']
+agones_libs = ["agones"  ,"grpc++_unsecure" ,"grpc" ,"gpr" ,"address_sorting" ,"protobuf" ,"cares" ,"z"  ,"pthread"]
 
 final_lib_path = project + 'bin/'
 
@@ -46,7 +47,14 @@ elif platform == 'windows':
 
 agones_libs_path = final_lib_path + 'lib'
 
-env.Append(CPPPATH=['.', 'src/', 'include/', 'godot_headers/', 'godot-cpp/include/', 'godot-cpp/include/gen/', 'godot-cpp/include/core/'])
+env.Append(CPPPATH=['.', 'src/', 'include/', 'godot_headers/', 'godot-cpp/include/', 'godot-cpp/include/gen/', 'godot-cpp/include/core/',
+    "libraries/agones/include/",
+    "libraries/c-ares/include/",
+    "libraries/gRPC/include/",
+    "libraries/OpenSSL/include/",
+    "libraries/Protobuf/include/",
+    "libraries/zlib/include/"
+    ])
 env.Append(LIBPATH=['godot-cpp/bin', agones_libs_path])
 env.Append(LIBS=['godot-cpp' + '.' + platform + '.' + str(bits)] + agones_libs)
 sources = []

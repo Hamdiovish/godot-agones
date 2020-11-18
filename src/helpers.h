@@ -3,7 +3,7 @@
 
 #include "agones.h"
 
-using namespace stable::agones::dev;
+using namespace agones::dev;
 
 inline std::string to_std(const godot::String& s)
 {
@@ -51,9 +51,9 @@ godot::Dictionary spec_to_dict(const sdk::GameServer_Spec& spec)
 {
     godot::Dictionary result, health;
     health["disabled"] = spec.health().disabled();
-    health["periodseconds"] = spec.health().periodseconds();
-    health["failurethreshold"] = spec.health().failurethreshold();
-    health["initialdelayseconds"] = spec.health().initialdelayseconds();
+    health["period_seconds"] = spec.health().period_seconds();
+    health["failure_threshold"] = spec.health().failure_threshold();
+    health["initial_delay_seconds"] = spec.health().initial_delay_seconds();
     result["health"] = health;
     return result;
 }
